@@ -1,4 +1,7 @@
 # To-Do Application Backend Server
+## ERD
+![image](https://github.com/mistarson/todo-project/assets/40788498/e1c3ff55-6ad3-4a32-aee9-8a70a5b1d010)
+
 ## 프로젝트 요구 사항
 - [ ]  **회원 가입 API**        
     - username, password를 Client에서 전달받기
