@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
 
-    private static final String BEARER_PREFIX = "Bearer ";
-
     private final long accessTime;
     private final long refreshTime;
     private final Key key;
@@ -36,7 +34,7 @@ public class JwtService {
         Date issuedAt = new Date();
         Date expiration = new Date(nowTime + accessTime);
 
-        return BEARER_PREFIX + Jwts.builder()
+        return Jwts.builder()
                 .setIssuer(issuer)
                 .setSubject(memberName)
                 .setAudience(TokenType.ACCESS.toString())
@@ -51,7 +49,7 @@ public class JwtService {
         Date issuedAt = new Date();
         Date expiration = new Date(nowTime + refreshTime);
 
-        return BEARER_PREFIX + Jwts.builder()
+        return Jwts.builder()
                 .setIssuer(issuer)
                 .setSubject(memberName)
                 .setAudience(TokenType.REFRESH.toString())

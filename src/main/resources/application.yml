@@ -15,12 +15,12 @@ spring:
     open-in-view: false
 
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 jwt:
   token:
     header: Authorization
-    secret: ENC(WudfJ8URqcBNKztOgvlzhpFX2yV5BTBJ3ZnM+vOnL4EgiLgraeYEF+Ncb9nS0GsEMcyyR7swImbFI2V1FQ3w5Q==)
+    secret: ENC(J+nDUsXGhoG3RcAPZikqHFVJzZN8aDUAGJnUSPq2LtIE6eZKi0Rv9/+vDADvx8bsVAQZSiZ5d1V2jChOkLz+bf7FvDGt7cCEoHmt4oZjBwg/oA/TbDAn5DduMJ+6WPZ33Iwo0GE9uvU8+BofFo6UYw==)
     access-time: 3600000 # 60분
     refresh-time: 2628000000 # 한달
     issuer: sch

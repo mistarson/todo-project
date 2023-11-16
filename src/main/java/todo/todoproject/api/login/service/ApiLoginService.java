@@ -2,6 +2,7 @@ package todo.todoproject.api.login.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import todo.todoproject.api.login.dto.MemberLoginDto;
 import todo.todoproject.domain.member.entity.Member;
 import todo.todoproject.domain.member.service.MemberService;
@@ -15,6 +16,7 @@ public class ApiLoginService {
     private final MemberService memberService;
     private final JwtService jwtService;
 
+    @Transactional
     public JwtLoginResponseDto loginMember(MemberLoginDto memberLoginDto) {
         String memberNameFromRequest = memberLoginDto.getMemberName();
         String passwordFromRequest = memberLoginDto.getPassword();

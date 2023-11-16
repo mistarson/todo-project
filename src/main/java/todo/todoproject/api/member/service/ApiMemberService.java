@@ -2,6 +2,7 @@ package todo.todoproject.api.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import todo.todoproject.api.member.dto.MemberRegisterDto;
 import todo.todoproject.domain.member.service.MemberService;
 
@@ -11,6 +12,7 @@ public class ApiMemberService {
 
     private final MemberService memberService;
 
+    @Transactional
     public void registerMember(MemberRegisterDto memberRegisterDto) {
         String memberName = memberRegisterDto.getMemberName();
         memberService.findMemberByMemberName(memberName)
