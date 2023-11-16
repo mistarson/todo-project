@@ -16,3 +16,11 @@ spring:
 
     hibernate:
       ddl-auto: create
+
+jwt:
+  token:
+    header: Authorization
+    secret: ENC(WudfJ8URqcBNKztOgvlzhpFX2yV5BTBJ3ZnM+vOnL4EgiLgraeYEF+Ncb9nS0GsEMcyyR7swImbFI2V1FQ3w5Q==)
+    access-time: 3600000 # 60분
+    refresh-time: 2628000000 # 한달
+    issuer: sch

@@ -1,4 +1,4 @@
-package todo.todoproject.global.config.security;
+package todo.todoproject.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

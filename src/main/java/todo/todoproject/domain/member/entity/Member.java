@@ -30,4 +30,8 @@ public class Member {
 
     private String refreshToken;
 
+    public void saveRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 }
