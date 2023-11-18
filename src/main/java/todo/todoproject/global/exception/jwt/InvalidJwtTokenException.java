@@ -1,0 +1,15 @@
+package todo.todoproject.global.exception.jwt;
+
+import todo.todoproject.global.exception.common.BusinessException;
+import todo.todoproject.global.exception.common.ErrorCode;
+
+public class InvalidJwtTokenException extends BusinessException {
+
+    public InvalidJwtTokenException() {
+        super(ErrorCode.INVALID_JWT_TOKEN_EXCEPTION);
+    }
+
+    public InvalidJwtTokenException(Throwable cause) {
+        super(ErrorCode.INVALID_JWT_TOKEN_EXCEPTION, cause);
+    }
+}

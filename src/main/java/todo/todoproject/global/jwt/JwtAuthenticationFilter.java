@@ -12,7 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import todo.todoproject.domain.member.service.MemberService;
+import todo.todoproject.global.exception.jwt.FailedAuthenticationException;
 import todo.todoproject.global.security.UserDetailsImpl;
+import todo.todoproject.global.util.StackTracePrinter;
 
 @Slf4j(topic = "로그인 및 JWT 생성")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -21,9 +23,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final MemberService memberService;
 
-    public JwtAuthenticationFilter(JwtManager jwtManager, MemberService memberService) {
+    private final ObjectMapper objectMapper;
+
+    public JwtAuthenticationFilter(JwtManager jwtManager, MemberService memberService, ObjectMapper objectMapper) {
         this.jwtManager = jwtManager;
         this.memberService = memberService;
+        this.objectMapper = objectMapper;
         setFilterProcessesUrl("/api/members/login");
     }
 
@@ -31,8 +36,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         log.info("로그인 시도");
+
+        MemberLoginDto memberLoginDto;
         try {
-            MemberLoginDto memberLoginDto = new ObjectMapper().readValue(request.getInputStream(),
+            memberLoginDto = objectMapper.readValue(request.getInputStream(),
                     MemberLoginDto.class);
 
             return getAuthenticationManager().authenticate(
@@ -42,6 +49,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             null
                     )
             );
+
         } catch (IOException e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
@@ -70,7 +78,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-        log.info("로그인 실패");
-        response.setStatus(401);
+        logger.error(StackTracePrinter.getPrintStackTrace(failed));
+        throw new FailedAuthenticationException(failed);
     }
 }

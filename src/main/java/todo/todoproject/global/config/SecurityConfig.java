@@ -1,5 +1,6 @@
 package todo.todoproject.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import todo.todoproject.domain.member.service.MemberService;
+import todo.todoproject.global.jwt.ExceptionHandlerFilter;
 import todo.todoproject.global.jwt.JwtAuthenticationFilter;
 import todo.todoproject.global.jwt.JwtAuthorizationFilter;
 import todo.todoproject.global.jwt.JwtManager;
@@ -42,7 +44,8 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtManager, memberService);
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtManager, memberService,
+                new ObjectMapper());
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
 
         return jwtAuthenticationFilter;
@@ -51,6 +54,11 @@ public class SecurityConfig {
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter(jwtManager, userDetailsService);
+    }
+
+    @Bean
+    public ExceptionHandlerFilter exceptionHandlerFilter() {
+        return new ExceptionHandlerFilter(new ObjectMapper());
     }
 
     @Bean
@@ -67,7 +75,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
         );
 
-        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
