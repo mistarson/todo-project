@@ -1,31 +1,24 @@
-package todo.todoproject.domain.member.service;
+package todo.todoproject.global.security;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import todo.todoproject.domain.member.entity.Member;
 import todo.todoproject.domain.member.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
-    public Optional<Member> findMemberByMemberName(String memberName) {
-        return memberRepository.findMemberByMemberName(memberName);
-    }
-
-    public void registerMember(Member member) {
-        memberRepository.save(member);
-    }
-
-    @Transactional
-    public void updateRefreshToken(String refreshToken, String memberName) {
+    @Override
+    public UserDetails loadUserByUsername(String memberName) throws UsernameNotFoundException {
         Member member = memberRepository.findMemberByMemberName(memberName)
                 .orElseThrow(() -> new UsernameNotFoundException("Not Found " + memberName));
-        member.saveRefreshToken(refreshToken);
+
+        return new UserDetailsImpl(member);
     }
 }

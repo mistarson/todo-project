@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import todo.todoproject.domain.member.contant.MemberRole;
 import todo.todoproject.domain.member.entity.Member;
 
 @Getter
@@ -22,10 +24,11 @@ public class MemberRegisterDto {
     @Pattern(regexp = REGEX_MEMBER_NAME_PATTERN)
     private String password;
 
-    public Member toEntity() {
+    public Member toEntity(BCryptPasswordEncoder bCryptPasswordEncoder) {
         return Member.builder()
                 .memberName(memberName)
-                .password(password)
+                .password(bCryptPasswordEncoder.encode(password))
+                .memberRole(MemberRole.USER)
                 .build();
     }
 

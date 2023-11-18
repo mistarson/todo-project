@@ -1,6 +1,7 @@
 package todo.todoproject.api.member.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import todo.todoproject.api.member.dto.MemberRegisterDto;
@@ -12,6 +13,8 @@ public class ApiMemberService {
 
     private final MemberService memberService;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Transactional
     public void registerMember(MemberRegisterDto memberRegisterDto) {
         String memberName = memberRegisterDto.getMemberName();
@@ -20,6 +23,6 @@ public class ApiMemberService {
                     throw new IllegalArgumentException("이미 존재하는 이름입니다.");
                 });
 
-        memberService.registerMember(memberRegisterDto.toEntity());
+        memberService.registerMember(memberRegisterDto.toEntity(bCryptPasswordEncoder));
     }
 }

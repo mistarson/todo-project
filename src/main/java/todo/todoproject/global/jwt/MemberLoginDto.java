@@ -1,4 +1,4 @@
-package todo.todoproject.api.login.dto;
+package todo.todoproject.global.jwt;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
