@@ -1,5 +1,6 @@
 package todo.todoproject.domain.todo.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import todo.todoproject.domain.common.BaseEntity;
+import todo.todoproject.domain.common.BaseTimeEntity;
 import todo.todoproject.domain.member.entity.Member;
 
 @Entity
@@ -20,18 +21,22 @@ import todo.todoproject.domain.member.entity.Member;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Todo extends BaseEntity {
+public class Todo extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long todoId;
 
+    @Column(nullable = false)
     private String todoTitle;
 
+    @Column(nullable = false)
     private String todoContent;
 
+    @Column(nullable = false)
     private boolean isCompleted;
 
+    @Column(nullable = false)
     private boolean isPrivate;
 
     @ManyToOne(fetch = FetchType.EAGER)

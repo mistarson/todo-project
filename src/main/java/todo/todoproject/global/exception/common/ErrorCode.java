@@ -12,7 +12,7 @@ public enum ErrorCode {
     INVALID_JWT_TOKEN_EXCEPTION(401, "JWT 토큰이 잘못되었습니다"),
 
     // 회원
-    NOT_FOUNDED_MEMBER_EXCEPTION(401, "회원 정보를 찾을 수 없습니다."),
+    NOT_FOUND_MEMBER_EXCEPTION(401, "회원 정보를 찾을 수 없습니다."),
     FAILED_AUTHENTICATION_EXCEPTION(401, "인증에 실패하였습니다.");
 
     private final int status;

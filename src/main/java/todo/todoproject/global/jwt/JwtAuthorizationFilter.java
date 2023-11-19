@@ -1,6 +1,5 @@
 package todo.todoproject.global.jwt;
 
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,8 +13,11 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
+import todo.todoproject.global.exception.jwt.FailedAuthenticationException;
 import todo.todoproject.global.util.JwtUtil;
+import todo.todoproject.global.util.StackTracePrinter;
 
 @Slf4j(topic = "JWT 검증 및 인가")
 @RequiredArgsConstructor
@@ -34,8 +36,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (jwt != null) {
             jwtManager.validateToken(jwt);
 
-            Claims info = jwtManager.getUserInfoFromToken(jwt);
-            setAuthentication(info.getSubject());
+            String memberName = jwtManager.getMemberNameFromToken(jwt);
+
+            try {
+                setAuthentication(memberName);
+            } catch (UsernameNotFoundException e) {
+                log.error(StackTracePrinter.getPrintStackTrace(e));
+                throw new FailedAuthenticationException(e);
+            }
         }
 
         filterChain.doFilter(req, res);

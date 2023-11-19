@@ -2,11 +2,11 @@ package todo.todoproject.domain.member.service;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import todo.todoproject.domain.member.entity.Member;
 import todo.todoproject.domain.member.repository.MemberRepository;
+import todo.todoproject.global.exception.member.MemberNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +25,7 @@ public class MemberService {
     @Transactional
     public void updateRefreshToken(String refreshToken, String memberName) {
         Member member = memberRepository.findMemberByMemberName(memberName)
-                .orElseThrow(() -> new UsernameNotFoundException("Not Found " + memberName));
+                .orElseThrow(MemberNotFoundException::new);
         member.saveRefreshToken(refreshToken);
     }
 }
