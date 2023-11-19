@@ -28,4 +28,10 @@ public class TodoService {
     }
 
 
+    public Todo modifyTodo(Todo modifyTodo, Todo findTodo) {
+
+        findTodo.modify(modifyTodo);
+
+        return findTodo;
+    }
 }

@@ -43,4 +43,8 @@ public class Todo extends BaseTimeEntity {
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
+    public void modify(Todo modifyTodo) {
+        this.todoTitle = modifyTodo.getTodoTitle();
+        this.todoContent = modifyTodo.getTodoContent();
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import todo.todoproject.api.todo.dto.TodoInquireDto;
+import todo.todoproject.api.todo.dto.TodoModifyDto;
 import todo.todoproject.api.todo.dto.TodosInquireDto;
 import todo.todoproject.api.todo.dto.TodoWriteDto;
 import todo.todoproject.api.todo.service.ApiTodoService;
@@ -52,6 +53,17 @@ public class ApiTodoController {
         List<TodosInquireDto> todos = apiTodoService.inquireTodos(accessToken);
 
         return ResponseEntity.ok(todos);
+    }
+
+    @PostMapping("/{todoId}")
+    public ResponseEntity<?> modifyTodo(HttpServletRequest req, @PathVariable Long todoId,
+                                        @Valid @RequestBody TodoModifyDto.Request todoModifyDto) {
+
+        String accessToken = JwtUtil.getTokenFromRequest(req);
+
+        TodoModifyDto.Response todo = apiTodoService.modifyTodo(accessToken, todoModifyDto, todoId);
+
+        return ResponseEntity.ok(todo);
     }
 
 }
