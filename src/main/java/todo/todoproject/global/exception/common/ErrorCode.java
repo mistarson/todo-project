@@ -13,7 +13,11 @@ public enum ErrorCode {
 
     // 회원
     NOT_FOUND_MEMBER_EXCEPTION(401, "회원 정보를 찾을 수 없습니다."),
-    FAILED_AUTHENTICATION_EXCEPTION(401, "인증에 실패하였습니다.");
+    FAILED_AUTHENTICATION_EXCEPTION(401, "인증에 실패하였습니다."),
+
+    // 할일
+    NOT_FOUND_TODO_EXCEPTION(401, "할일 정보를 찾을 수 없습니다."),
+    TODO_PRIVATE_EXCEPTION(401, "작성자만 확인할 수 있는 비공개 할일입니다.");
 
     private final int status;
 
