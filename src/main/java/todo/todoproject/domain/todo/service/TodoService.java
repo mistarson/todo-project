@@ -1,5 +1,6 @@
 package todo.todoproject.domain.todo.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,13 @@ public class TodoService {
         return todoRepository.save(todo);
     }
 
-    public Todo findByTodoIdWithMember(String memberName, Long todoId) {
+    public Todo findByTodoIdWithMember(Long todoId) {
         return todoRepository.findByTodoIdWithMember(todoId).orElseThrow(TodoNotFoundException::new);
     }
+
+    public List<Todo> findNotPrivateTodos() {
+        return todoRepository.findNotPrivateTodos();
+    }
+
+
 }

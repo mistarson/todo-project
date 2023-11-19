@@ -1,9 +1,12 @@
 package todo.todoproject.api.todo.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import todo.todoproject.api.todo.dto.TodoInquireDto;
 import todo.todoproject.api.todo.dto.TodoWriteDto;
+import todo.todoproject.api.todo.dto.TodosInquireDto;
 import todo.todoproject.domain.member.entity.Member;
 import todo.todoproject.domain.member.service.MemberService;
 import todo.todoproject.domain.todo.entity.Todo;
@@ -37,7 +40,7 @@ public class ApiTodoService {
     public TodoInquireDto inquireTodo(String accessToken, Long todoId) {
 
         String memberName = jwtManager.getMemberNameFromToken(accessToken);
-        Todo findTodo = todoService.findByTodoIdWithMember(memberName, todoId);
+        Todo findTodo = todoService.findByTodoIdWithMember(todoId);
 
         validatePrivateTodo(memberName, findTodo);
 
@@ -50,5 +53,13 @@ public class ApiTodoService {
         if (todo.isPrivate() && !memberByTodo.getMemberName().equals(memberNameByRequest)) {
             throw new PrivateTodoException();
         }
+    }
+
+    public List<TodosInquireDto> inquireTodos(String accessToken) {
+
+        String memberName = jwtManager.getMemberNameFromToken(accessToken);
+
+        return todoService.findNotPrivateTodos().stream().map(TodosInquireDto::from)
+                .collect(Collectors.toList());
     }
 }

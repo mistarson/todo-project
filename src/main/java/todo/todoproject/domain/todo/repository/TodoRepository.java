@@ -1,5 +1,6 @@
 package todo.todoproject.domain.todo.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,4 +11,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     @Query("select t from Todo t join fetch t.member where t.todoId = :todoId")
     Optional<Todo> findByTodoIdWithMember(@Param("todoId") Long todoId);
+
+    @Query("select t from Todo t where t.isPrivate = false")
+    List<Todo> findNotPrivateTodos();
 }
