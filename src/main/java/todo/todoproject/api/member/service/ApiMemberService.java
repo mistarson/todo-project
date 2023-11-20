@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import todo.todoproject.api.member.dto.MemberRegisterDto;
 import todo.todoproject.domain.member.service.MemberService;
+import todo.todoproject.global.exception.member.MemberAlreadyExistException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class ApiMemberService {
         String memberName = memberRegisterDto.getMemberName();
         memberService.findMemberByMemberName(memberName)
                 .ifPresent(member -> {
-                    throw new IllegalArgumentException("이미 존재하는 이름입니다.");
+                    throw new MemberAlreadyExistException();
                 });
 
         memberService.registerMember(memberRegisterDto.toEntity(bCryptPasswordEncoder));
