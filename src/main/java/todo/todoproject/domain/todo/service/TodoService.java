@@ -34,4 +34,8 @@ public class TodoService {
 
         return findTodo;
     }
+
+    public void completeTodo(Todo findTodo) {
+        findTodo.completeTodo();
+    }
 }

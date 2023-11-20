@@ -82,6 +82,19 @@ public class ApiTodoService {
         return Response.from(todo);
     }
 
+    @Transactional
+    public void completeTodo(String accessToken, Long todoId) {
+
+        String memberName = jwtManager.getMemberNameFromToken(accessToken);
+
+        Todo findTodo = todoService.findByTodoIdWithMember(todoId);
+
+        Member findMember = findTodo.getMember();
+        validateSameMemberTodo(memberName, findMember.getMemberName());
+
+        todoService.completeTodo(findTodo);
+    }
+
     private void validateSameMemberTodo(String memberNameFromRequest, String memberNameFromDB) {
         if (!memberNameFromDB.equals(memberNameFromRequest)) {
             throw new MisMatchedMemberException();
